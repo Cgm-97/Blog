@@ -1,0 +1,31 @@
+---
+import type { Language } from '@src/types';
+import Layout from '@src/layout/layout.astro';
+import IndexPostUI from '@src/layout/mixins/IndexPostUI.astro';
+import { getBlogEntry } from '@src/prework';
+
+const lang: Language = 'en';
+const pageSize = 10;
+const blogEntries = await getBlogEntry(lang);
+const pageCount = Math.max(1, Math.ceil(blogEntries.length / pageSize));
+
+const pageSetting = {
+  title: 'Home',
+  type: 'index',
+  comments: false
+};
+
+const firstPage = {
+  data: blogEntries.slice(0, pageSize).map(entry => entry.data),
+  currentPage: 1,
+  lastPage: pageCount,
+  url: {
+    prev: '',
+    next: pageCount > 1 ? '/2' : '',
+  }
+};
+---
+
+<Layout lang={lang} page={pageSetting}>
+  <IndexPostUI lang={lang} postsPagnition={firstPage as any} />
+</Layout>

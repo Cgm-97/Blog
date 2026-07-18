@@ -1,0 +1,19 @@
+---
+import type { Language } from '@src/types';
+
+interface Props { lang: Language; }
+const { lang } = Astro.props;
+import { getConfig } from '@src/config';
+const config = getConfig(lang);
+---
+
+<div class="card-widget card-announcement">
+  <div class="item-headline pb-[6px] text-[1.2em]">
+    <span>Special Note</span>
+  </div>
+  <div class="announcement_content">
+    {config.aside.card_announcement.content.split('\n').map((line: string) => (
+      <p set:html={line}></p>
+    ))}
+  </div>
+</div>

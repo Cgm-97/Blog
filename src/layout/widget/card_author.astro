@@ -1,0 +1,55 @@
+---
+import type { Language } from '@src/types';
+import { theme } from '@src/theme';
+
+interface Props { lang: Language; }
+const { lang } = Astro.props;
+import { getConfig } from '@src/config';
+
+import Social from '../header/social.astro';
+import { useTranslations } from '@src/utils';
+import { getBlogEntry,getCategoryList } from '@src/prework';
+const blogLength:number = (await getBlogEntry(lang)).length;
+const categoryLength:number = (await getCategoryList(lang)).length;
+const tagLength:number = 0;
+const config = getConfig(lang);
+const t = useTranslations(lang);
+---
+
+{theme.aside.card_author.enable && (
+  <div class="card-widget card-info text-center">
+    <div class="avatar-img my-5 mx-auto">
+      <img src={theme.avatar.img} onerror={`this.onerror=null;this.src='${theme.error_img.flink}'`} alt="avatar" />
+    </div>
+    <div class="author-info-name font-medium text-[1.57em]">{config.author}</div>
+    <div class="author-info-description" style="margin-top: -0.42em; white-space: pre-line;">{config.description}</div>
+
+    <div class="site-data my-[14px] mb-1">
+      <a href={`/${config.archive_dir}/`}>
+        <div class="headline">{t('aside.articles')}</div>
+        <div class="length-num">{blogLength}</div>
+      </a>
+      <a href={`/`}>
+        <div class="headline">{t('aside.tags')}</div>
+        <div class="length-num">{tagLength}</div>
+      </a>
+      <a href={`/${config.category_dir}/`}>
+        <div class="headline">{t('aside.categories')}</div>
+        <div class="length-num">{categoryLength}</div>
+      </a>
+    </div>
+
+    {theme.aside.card_author.button.enable && (
+      <a id="card-info-btn" class="block mt-[14px] text-center rounded-[7px]" href={theme.aside.card_author.button.link} style="background-color: var(--btn-bg); color: var(--btn-color);">
+        <i class={theme.aside.card_author.button.icon}></i>
+        <span class="pl-[10px]">{theme.aside.card_author.button.text}</span>
+      </a>
+    )}
+
+    {(
+      <div class="card-info-social-icons my-[6px] -mb-[6px]">
+        <Social lang={lang}/>
+      </div>
+    )}
+  </div>
+)}

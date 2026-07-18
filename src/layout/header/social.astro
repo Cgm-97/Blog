@@ -1,0 +1,24 @@
+---
+import type { Language } from '@src/types';
+import { theme } from '@src/theme';
+
+interface Props { lang: Language; }
+const { lang } = Astro.props;
+void lang;
+
+const socialIcons = Object.entries(theme.social).map(([icon, value]) => {
+  const [link, title, color] = value.split('||').map(i => i.trim());
+  const iconStyle = color ? `color: ${color.replace(/[\'\"]/g, '')};` : '';
+  const iconTitle = title || '';
+  const href = iconTitle == "RSS" ? link : link;
+  return { icon, href, iconStyle, iconTitle };
+});
+---
+
+<div id="social-icons">
+  {socialIcons.map((icon) => (
+    <a class="social-icon" href={icon.href} target="_blank" title={icon.iconTitle}> 
+      <i class={icon.icon} style={icon.iconStyle}></i>
+    </a>
+  ))}
+</div>

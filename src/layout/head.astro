@@ -1,0 +1,50 @@
+---
+import type { Language } from '@src/types';
+import { theme }from '../theme';
+import { getConfig }from '../config';
+
+interface Props { lang: Language; page: Record<string, any>; }
+const { page,lang } = Astro.props;
+const config = getConfig(lang);
+import { is_home,is_archive, is_category } from '@src/utils';
+
+import '@fortawesome/fontawesome-free/css/all.min.css'
+import '../styles/global.css';
+import '../styles/layout.css';
+import '../styles/pages.css';
+import '../styles/tags.css';
+import '../styles/modes.css';
+import '../styles/search.css';
+
+const isHome = is_home(Astro.url);
+const isArchive = is_archive(Astro.url);
+const isCategory = is_category(Astro.url);
+
+let pageTitle;
+if (isArchive) {
+  pageTitle = page.title
+} else if (isCategory) {
+  pageTitle = page.title;
+} else {
+  pageTitle = page.title || config.title || '';
+}
+
+const tabTitle = isHome || !pageTitle ? config.title : pageTitle + ' | ' + config.title;
+const pageAuthor = config.author;
+const pageCopyright = config.copyright || config.author;
+const themeColorLight = '#062451';
+const themeColorDark = '#04112b';
+const themeColor = theme.display_mode === 'dark' ? themeColorDark : themeColorLight;
+---
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover" />
+  <title>{tabTitle}</title>
+  <meta name="author" content={pageAuthor} />
+  <meta name="copyright" content={pageCopyright} />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="theme-color" content={themeColor} />
+
+  <link rel="shortcut icon" href="/img/logo.png">
+</head>

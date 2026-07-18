@@ -1,0 +1,32 @@
+---
+import { getBlogEntry } from '@src/prework';
+import { render } from 'astro:content';
+import Layout from '@src/layout/layout.astro';
+import Comments from '@src/layout/third-party/comments.astro';
+
+export async function getStaticPaths() {
+  const lang = 'en';
+  const paths: { params: { abbrlink: string }; props: { entry: any } }[] = [];
+  const blogEntries = await getBlogEntry(lang);
+  paths.push(...blogEntries.map(entry => ({
+    params: { abbrlink: entry.data.abbrlink },
+    props: { entry },
+  })));
+  return paths;
+}
+
+const { entry } = Astro.props as { entry: any };
+const lang = 'en';
+const { Content, headings } = await render(entry);
+---
+<Layout lang={lang} page={entry.data} postHeadings={headings}>
+  <div id="post">
+    <article id="article-container" class="post-content">
+      <Content />
+    </article>
+    <div class="tag_share">
+      
+    </div>
+    <Comments lang={lang}/>
+  </div>
+</Layout>

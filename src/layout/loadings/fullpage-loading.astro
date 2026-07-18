@@ -1,0 +1,35 @@
+---
+import { theme } from '../../theme'; // 假设 theme 是一个导入的主题配置
+// import { _p } from '../../../utils'; // 假设这是导入的实用函数
+---
+
+{theme.preloader.enable ? (
+  <div id="loading-box">
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    {/* <div class="loading-word">{_p('loading')}</div> */}
+    <div class="loading-word">{'loading'}</div>
+    <script>
+      {`
+        (() => {
+          const $loadingBox = document.getElementById('loading-box');
+          const $body = document.body;
+          const preloader = {
+            endLoading: () => {
+              $body.classList.remove('overflow-locked');
+              $loadingBox.classList.add('loaded');
+            },
+            initLoading: () => {
+              $body.classList.add('overflow-locked');
+              $loadingBox.classList.remove('loaded');
+            }
+          };
+
+          preloader.initLoading();
+          window.addEventListener('load', preloader.endLoading);
+        })();
+      `}
+    </script>
+  </div>
+) : null}

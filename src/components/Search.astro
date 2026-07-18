@@ -1,0 +1,179 @@
+---
+---
+
+<div id="search" class="hidden">
+  <div id="search-mask"></div>
+  <div id="local-search" class="search-dialog">
+    <div class="search-nav">
+      <span class="search-close-button">
+        <i class="fas fa-times"></i>
+      </span>
+    </div>
+    <div class="search-dialog-title">Search</div>
+    <hr />
+    <div id="pagefind-container"></div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+
+<script>
+  // Pagefind 实例
+  let pagefindUI: any = null;
+  let pagefindLoaded = false;
+  let isInitializing = false;
+  
+  async function loadPagefindScript(): Promise<void> {
+    if (pagefindLoaded) return Promise.resolve();
+    
+    return new Promise((resolve, reject) => {
+      if (document.querySelector('script[data-pagefind-ui]')) {
+        resolve();
+        return;
+      }
+      
+      const script = document.createElement('script');
+      script.src = '/pagefind/pagefind-ui.js';
+      script.type = 'text/javascript';
+      script.setAttribute('data-pagefind-ui', 'true');
+      script.onload = () => {
+        pagefindLoaded = true;
+        resolve();
+      };
+      script.onerror = () => reject(new Error('Failed to load Pagefind UI'));
+      document.head.appendChild(script);
+    });
+  }
+  
+  async function initPagefind() {
+    if (pagefindUI || isInitializing) return;
+    isInitializing = true;
+    
+    try {
+      await loadPagefindScript();
+      
+      const PagefindUIConstructor = (window as any).PagefindUI;
+      
+      if (!PagefindUIConstructor) {
+        throw new Error('PagefindUI not found on window object');
+      }
+      
+      // 销毁旧的实例（如果存在）
+      const container = document.getElementById('pagefind-container');
+      if (container) {
+        container.innerHTML = '';
+      }
+      
+      // 创建新的 PagefindUI 实例
+      pagefindUI = new PagefindUIConstructor({
+        element: '#pagefind-container',
+        showImages: false,
+        excerptLength: 15,
+        showSubResults: true,
+        resetStyles: false,
+        bundlePath: '/pagefind/',
+        translations: {
+          placeholder: 'Search posts...',
+          clear_search: 'Clear',
+          load_more: 'Load more results',
+          search_label: 'Search this site',
+          filters_label: 'Filters',
+          zero_results: 'No results found',
+          many_results: 'Found [COUNT] results',
+          one_result: 'Found [COUNT] result',
+          alt_search: 'No results found, showing results for [DIFFERENT_TERM]',
+          search_suggestion: 'No results found, try these searches:',
+          searching: 'Searching...'
+        }
+      });
+
+      const style = document.createElement('style');
+      style.setAttribute('data-pagefind-hide-icon', 'true');
+      style.textContent = `
+        #pagefind-container .pagefind-ui__form::before {
+          display: none !important;
+          content: none !important;
+        }
+        #pagefind-container .pagefind-ui__search-input {
+          padding-left: 20px !important;
+        }
+        #pagefind-container .pagefind-ui__search-inputs > :first-child,
+        #pagefind-container .pagefind-ui__search-inputs svg,
+        #pagefind-container .pagefind-ui__search-inputs i,
+        #pagefind-container .pagefind-ui__search-icon,
+        #pagefind-container .pagefind-ui__search-inputs [data-pficon] {
+          display: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // 等待 Pagefind 初始化完成，然后聚焦到输入框
+      setTimeout(() => {
+        const pagefindInput = document.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
+        if (pagefindInput) {
+          pagefindInput.focus();
+        }
+      }, 100);
+      
+    } catch (error) {
+      console.error('Failed to load Pagefind:', error);
+      const container = document.getElementById('pagefind-container');
+      if (container) {
+        container.innerHTML = '<p style="text-align: center; padding: 40px 20px; color: #666;">Search failed to load. Please refresh and try again.</p>';
+      }
+    } finally {
+      isInitializing = false;
+    }
+  }
+  
+  // 打开/关闭搜索弹窗逻辑
+  const searchButton = document.getElementById('search-button');
+  const searchMask = document.getElementById('search-mask');
+  const searchClose = document.querySelector('.search-close-button');
+  const searchContainer = document.getElementById('search');
+  
+  function openSearch() {
+    searchContainer?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    initPagefind();
+  }
+  
+  function closeSearch() {
+    searchContainer?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+  
+  searchButton?.addEventListener('click', openSearch);
+  searchMask?.addEventListener('click', closeSearch);
+  searchClose?.addEventListener('click', closeSearch);
+  
+  // ESC 键关闭
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !searchContainer?.classList.contains('hidden')) {
+      closeSearch();
+    }
+  });
+</script>
+
+<style>
+  #search {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+  }
+  #search.hidden {
+    display: none;
+  }
+
+  .search-dialog-title {
+    color: var(--search-color, #49b1f5);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 2px 0 10px;
+  }
+  
+  #pagefind-container {
+    width: 100%;
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import type { Language } from '@src/types';
+import { theme } from '@src/theme';
+
+interface Props { lang: Language; }
+const { lang } = Astro.props;
+import { useTranslations } from '@src/utils';
+const t = useTranslations(lang);
+
+const serverURL = theme.waline.serverURL;
+---
+
+<hr class="custom-hr" />
+<div id="post-comment">
+  <div class="comment-head">
+    <div class="comment-headline">
+      <i class="fas fa-comments fa-fw"></i>
+      <span>{' ' + t('comment')}</span>
+    </div>
+  </div>
+
+  <div class="comment-wrap">
+    <div id="waline-wrap" data-server-url={serverURL} />
+  </div>
+</div>
+
+<script>
+  import { init } from '@waline/client';
+  import '@waline/client/style';
+
+  const el = document.getElementById('waline-wrap');
+  if (el) {
+    init({
+      el: '#waline-wrap',
+      serverURL: el.dataset.serverUrl || '',
+      pageview: true,
+      dark: 'html.dark',
+      path: window.location.pathname,
+      comment: true,
+    });
+  }
+</script>

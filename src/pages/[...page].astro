@@ -1,0 +1,53 @@
+---
+import type { Language } from '@src/types';
+import Layout from '@src/layout/layout.astro';
+import IndexPostUI from '@src/layout/mixins/IndexPostUI.astro';
+import { getBlogEntry } from '@src/prework';
+
+const lang: Language = 'en';
+const pageSize = 10;
+
+export async function getStaticPaths() {
+  const lang = 'en';
+  const pageSize = 10;
+  const blogEntries = await getBlogEntry(lang);
+  const pageCount = Math.max(1, Math.ceil(blogEntries.length / pageSize));
+  const paths = [];
+  for (let pageNumber = 2; pageNumber <= pageCount; pageNumber += 1) {
+    const start = (pageNumber - 1) * pageSize;
+    const end = start + pageSize;
+    paths.push({
+      params: { page: `${pageNumber}` },
+      props: {
+        pageNumber,
+        pageData: blogEntries.slice(start, end).map(entry => entry.data),
+      }
+    });
+  }
+  return paths;
+}
+
+const { pageNumber, pageData } = Astro.props as { pageNumber: number; pageData: any[] };
+const blogEntries = await getBlogEntry(lang);
+const pageCount = Math.max(1, Math.ceil(blogEntries.length / pageSize));
+
+const pageSetting = {
+  title: 'Home',
+  type: 'index',
+  comments: false
+};
+
+const pagination = {
+  data: pageData,
+  currentPage: pageNumber,
+  lastPage: pageCount,
+  url: {
+    prev: pageNumber === 2 ? '' : `/${pageNumber - 1}`,
+    next: pageNumber < pageCount ? `/${pageNumber + 1}` : '',
+  }
+};
+---
+
+<Layout lang={lang} page={pageSetting}>
+  <IndexPostUI lang={lang} postsPagnition={pagination as any} />
+</Layout>

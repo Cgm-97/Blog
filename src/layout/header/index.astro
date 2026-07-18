@@ -1,0 +1,91 @@
+---
+import type { Language } from '@src/types';
+import { getBgPath } from '@src/utils';
+import { theme } from '@src/theme';
+
+interface Props { lang: Language; page: Record<string, any>; }
+const { lang,page } = Astro.props;
+import { getConfig } from '@src/config';
+const config = getConfig(lang);
+import { is_home, is_post } from '@src/utils';
+import Nav from './nav.astro';
+import Social from './social.astro';
+import PostInfo from './post-info.astro';
+
+const returnTopImg = (img:string | false) => img !== false ? img || theme.default_top_img : false;
+const isFixedClass = theme.nav.fixed ? ' fixed' : '';
+let top_img:string | false = false;
+let headerClassName = 'not-top-img';
+let bg_img = '';
+
+const isPost = is_post(Astro.url);
+const isHome = is_home(Astro.url);
+
+if (!theme.disable_top_img ) {
+  if (isPost) {
+    top_img = page.cover || theme.default_top_img;
+  } else if (isHome) {
+    top_img = returnTopImg(theme.index_img);
+  } else {
+    top_img = false;
+  }
+
+  if (top_img !== false) {
+    headerClassName = isHome ? 'full_page' : 'post-bg';
+    bg_img = getBgPath(typeof top_img === 'string' ? top_img : '');
+  }
+}
+
+const sub = config.subtitle.sub;
+---
+
+<header id="page-header" class={`${headerClassName}${isFixedClass} relative w-full bg-theme bg-center bg-cover bg-no-repeat transition-all duration-500`} style={bg_img}>
+  <Nav lang={lang}/>
+      {top_img !== false ? (
+        isPost ? (
+          <PostInfo lang={lang} page={page}/>
+        ) : isHome ? (
+          <div id="site-info" class="absolute w-full px-[10px]" style="top: 43%;">
+            <h1 id="site-title">{config.title}</h1>
+            {theme.subtitle.enable && (
+              <div id="site-subtitle" data-strings={JSON.stringify(sub)}>
+                <span id="subtitle"></span>
+              </div>
+            )}
+            {(
+              <div id="site_social_icons" class="hidden mx-auto text-center md:block">
+                <Social lang={lang}/>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div id="page-site-info" class="absolute w-full px-[10px]" style="top: 200px;">
+            {<h1 id="site-title">{page.title || page.tag || page.category}</h1> }
+          </div>
+        )
+      ) : (
+        !isPost && <h1 class="title-seo">{page.title || page.tag || page.category || config.title}</h1>
+      )}
+    {isHome && (
+      <div id="scroll-down" class="absolute bottom-[10px] w-full cursor-pointer">
+        <i class="fas fa-angle-down scroll-down-effects"></i>
+      </div>
+    )}
+
+</header>
+
+<script>
+  import Typed from 'typed.js';
+
+  const el = document.getElementById('site-subtitle');
+  if (el) {
+    const strings = JSON.parse(el.dataset.strings || '[]');
+    new Typed('#subtitle', {
+      strings,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    });
+  }
+</script>

@@ -1,0 +1,38 @@
+---
+import type { Language } from '@src/types';
+import Layout from '@src/layout/layout.astro';
+import { useTranslations } from '@src/utils';
+import { getCollection, render } from 'astro:content';
+import Comments from '@src/layout/third-party/comments.astro';
+
+const lang: Language = 'en';
+const boardEntries = await getCollection('board');
+const boardEntry = boardEntries[0];
+const t = useTranslations(lang);
+
+const page = {
+  title: t('page.board'),
+  type: 'board',
+  comments: true
+};
+const boardContent = boardEntry ? await render(boardEntry) : null;
+const BoardContent = boardContent?.Content;
+---
+
+<Layout lang={lang} page={page}>
+  <div id="page">
+    <div id="article-container">
+      {BoardContent ? (
+        <BoardContent />
+      ) : (
+        <div class="markdown-content">
+          <h1>About</h1>
+          <p>Welcome to my blog.</p>
+          <p>I write about cybersecurity, software development, and hardware design.</p>
+          <p>Feel free to explore the posts, archive, and links.</p>
+        </div>
+      )}
+    </div>
+    <Comments lang={lang}/>
+  </div>
+</Layout>
