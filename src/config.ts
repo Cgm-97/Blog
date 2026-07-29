@@ -2,7 +2,7 @@ import type { Language, SiteConfig } from './types';
 
 const configEn = {
     title: "Cgm's Blog",
-    description: "🚩CTF Player @ RCEs \n Goal: NTUST(NTU) CSIE x ECE \n 一個正在資工系熬夜爆肝的高二生",
+    description: "🚩CTF Player @ RCEs \n Goal: NTUST(NTU) CSIE x ECE \n 一個正在資工系熬夜爆肝的高三生",
     keywords: "CTF, Development, Electronics",
     author: "Cgm._.97",
     copy: {
