@@ -8,7 +8,7 @@ Hi，I'm Cgm._.97
 
 🚩CTF Player @ RCEs
 
-My Goal: NTUST(NTU) CSIE x 
+My Goal: NTUST(NTU) CSIE x GIEE
 
 一個正在資工系熬夜爆肝的高三生
 
