@@ -12,7 +12,7 @@ const middle = (() => {
 })();
 
 function generatePageNumbers(current:number, total:number) {
-  const delta = 2; // 当前页码前后显示的页码数量
+  const delta = 2;
   const range = [];
   for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
     range.push(i);

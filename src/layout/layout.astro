@@ -20,8 +20,6 @@ interface Props {
 }
 const { lang,page,postHeadings } = Astro.props;
 const asideClass = theme.aside.enable && theme.aside.hide ? 'hide-aside' : '';
-
-// 排除分页和归档页面不被 Pagefind 索引
 const excludeFromSearch = page.type === 'archives' || page.type === 'index';
 ---
 <html lang={lang} class={asideClass}>

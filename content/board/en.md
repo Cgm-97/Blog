@@ -10,7 +10,7 @@ Hi，I'm Cgm._.97
 
 My Goal: NTUST(NTU) CSIE x 
 
-一個正在資工系熬夜爆肝的高二生
+一個正在資工系熬夜爆肝的高三生
 
 
 # Skill
@@ -29,6 +29,13 @@ My Goal: NTUST(NTU) CSIE x
 ## Activity
 
 <div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-item-title">Jul 2026</div>
+    <div class="timeline-item-content">
+      AIS3 新型態資安實務暑期課程 2026 <span class="hl-label green">進階資安攻防競技 CTF4</span>
+    </div>
+  </div>
+
   <div class="timeline-item">
     <div class="timeline-item-title">Jul 2026</div>
     <div class="timeline-item-content">
