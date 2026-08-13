@@ -1,13 +1,8 @@
 ---
-import type { Language } from '@src/types';
 import { theme } from '@src/theme';
-import { useTranslations } from '@src/utils';
 import { getConfig } from '@src/config';
 
-interface Props { lang: Language; }
-const { lang } = Astro.props;
-const config = getConfig(lang);
-const t = useTranslations(lang);
+const config = getConfig();
 
 const currentYear = new Date().getFullYear();
 const sinceYear = theme.footer.owner.since;
@@ -29,10 +24,10 @@ const customText = theme.footer.custom_text;
 
   {showCopyright && (
     <div class="framework-info">
-      <span>{t('footer.framework')} </span>
+      <span>Framework </span>
       <a href="https://astro.build" rel="external nofollow noreferrer">Astro</a>
       <span class="mx-1">|</span>
-      <span>{t('footer.theme')} </span>
+      <span>Theme </span>
       <a href="https://github.com/mocusez/astro-astrofly">Astrofly</a>
     </div>
   )}

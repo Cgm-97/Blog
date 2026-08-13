@@ -1,7 +1,6 @@
 ---
-import type { Language } from '@src/types';
 import { theme } from '@src/theme';
-import linkEn from '@content/link.en.json';
+import linkData from '@content/link.en.json';
 import Layout from '@src/layout/layout.astro';
 
 interface LinkItem {
@@ -17,8 +16,7 @@ interface LinkGroup {
   link_list: LinkItem[];
 }
 
-const lang: Language = 'en';
-const link: LinkGroup[] = linkEn;
+const link: LinkGroup[] = linkData;
 
 let pageContent = '';
 if (link) {
@@ -53,7 +51,7 @@ const page = {
   comments: false
 };
 ---
-<Layout lang={lang} page={page}>
+<Layout page={page}>
     <div id="page" class={''}>
         <div id="article-container">
             <div class="flink" set:html={pageContent}/>

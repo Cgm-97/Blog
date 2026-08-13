@@ -4,12 +4,9 @@ import ArticleSort from '@src/layout/mixins/article-sort.astro';
 import Pagination from '@src/layout/pagination.astro';
 import { getBlogEntry, getCategoryList } from '@src/prework';
 
-const lang = 'en';
-
 export async function getStaticPaths({ paginate }: any) {
-  const lang = 'en';
-  const categories = await getCategoryList(lang);
-  const blogEntries = await getBlogEntry(lang);
+  const categories = await getCategoryList();
+  const blogEntries = await getBlogEntry();
   const paths = [];
   const POSTS_PER_PAGE = 10;
 
@@ -41,10 +38,10 @@ const pageSettings = {
 };
 ---
 
-<Layout lang={lang} page={pageSettings}>
+<Layout page={pageSettings}>
     <div id="category">
       <div class="article-sort-title">{'Category - ' + decodedCategory}</div>
-      <ArticleSort lang={lang} posts={page.data}/>
+      <ArticleSort posts={page.data}/>
       <Pagination page={page}/>
     </div>
 </Layout>

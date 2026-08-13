@@ -1,11 +1,5 @@
 ---
-import type { Language } from '@src/types';
 import { theme } from '@src/theme';
-
-interface Props { lang: Language; }
-const { lang } = Astro.props;
-import { useTranslations } from '@src/utils';
-const t = useTranslations(lang);
 
 const serverURL = theme.waline.serverURL;
 ---
@@ -15,7 +9,7 @@ const serverURL = theme.waline.serverURL;
   <div class="comment-head">
     <div class="comment-headline">
       <i class="fas fa-comments fa-fw"></i>
-      <span>{' ' + t('comment')}</span>
+      <span> Comments</span>
     </div>
   </div>
 

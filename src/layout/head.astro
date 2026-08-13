@@ -1,11 +1,10 @@
 ---
-import type { Language } from '@src/types';
 import { theme }from '../theme';
 import { getConfig }from '../config';
 
-interface Props { lang: Language; page: Record<string, any>; }
-const { page,lang } = Astro.props;
-const config = getConfig(lang);
+interface Props { page: Record<string, any>; }
+const { page } = Astro.props;
+const config = getConfig();
 import { is_home,is_archive, is_category } from '@src/utils';
 
 import '@fortawesome/fontawesome-free/css/all.min.css'

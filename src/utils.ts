@@ -1,7 +1,4 @@
 // export function urlFor(path: string): string {
-//     // const baseUrl = import.meta.env.BASE_URL || '/';
-//     // const baseUrl = '/';
-//     // return new URL(path, baseUrl).toString();
 //     const baseUrl = 'http://localhost:4322';
 //     console.log('urlFor');
 //     try {
@@ -10,48 +7,25 @@
 //         console.error('Invalid URL:', error);
 //         throw new TypeError('Invalid URL');
 //     }
-    
 // }
 
-export function getBgPath(bg_img:string): string {
-    return `background-image: url(${bg_img})`;
+export function getBgPath(bg_img: string): string {
+  return `background-image: url(${bg_img})`;
 }
 
-
-import en from './language/en.json';
-type LocaleData = {
-    [key: string]: any;
-};
-
-export function useTranslations(_lang:string) {
-  const localeData: LocaleData = en;
-  return function t(path: string) {
-    const keys = path.split('.');
-    let result: any = localeData;
-    for (const key of keys) {
-      if (result[key] !== undefined) {
-        result = result[key];
-      } else {
-        return path;
-      }
-    }  
-    return result;
-  }
-}
-
-export function is_home(url:URL): boolean {
+export function is_home(url: URL): boolean {
   return /^\/(\d+\/?)?$/.test(url.pathname);
 }
 
-export function is_post(url:URL): boolean {
+export function is_post(url: URL): boolean {
   return url.pathname.includes('/posts/');
 }
 
-export function is_category(url:URL): boolean {
+export function is_category(url: URL): boolean {
   return url.pathname.includes('/categories/');
 }
 
-export function is_archive(url:URL): boolean {
+export function is_archive(url: URL): boolean {
   return url.pathname.includes('/archives/');
 }
 

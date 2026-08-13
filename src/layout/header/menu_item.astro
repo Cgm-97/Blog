@@ -1,10 +1,7 @@
 ---
-import type { Language } from '@src/types';
 import { getConfig } from '@src/config';
 
-interface Props { lang: Language; }
-const { lang } = Astro.props;
-const config = getConfig(lang);
+const config = getConfig();
 const trim = (str:string) => str.trim();
 const isMenuGroup = (value: unknown): value is Record<string, string> =>
   typeof value === 'object' && value !== null;

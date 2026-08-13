@@ -1,25 +1,22 @@
 ---
-import type { Language } from '@src/types';
 import Layout from '@src/layout/layout.astro';
-import { useTranslations } from '@src/utils';
 import { getCollection, render } from 'astro:content';
 import Comments from '@src/layout/third-party/comments.astro';
 
-const lang: Language = 'en';
 const boardEntries = await getCollection('about');
 const boardEntry = boardEntries[0];
-const t = useTranslations(lang);
 
 const page = {
-  title: t('page.board'),
+  title: 'About',
   type: 'board',
   comments: true
 };
+
 const boardContent = boardEntry ? await render(boardEntry) : null;
 const BoardContent = boardContent?.Content;
 ---
 
-<Layout lang={lang} page={page}>
+<Layout page={page}>
   <div id="page">
     <div id="article-container">
       {BoardContent ? (
@@ -33,6 +30,6 @@ const BoardContent = boardContent?.Content;
         </div>
       )}
     </div>
-    <Comments lang={lang}/>
+    <Comments />
   </div>
 </Layout>

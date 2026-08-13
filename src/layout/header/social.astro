@@ -1,10 +1,5 @@
 ---
-import type { Language } from '@src/types';
 import { theme } from '@src/theme';
-
-interface Props { lang: Language; }
-const { lang } = Astro.props;
-void lang;
 
 const socialIcons = Object.entries(theme.social).map(([icon, value]) => {
   const [link, title, color] = value.split('||').map(i => i.trim());

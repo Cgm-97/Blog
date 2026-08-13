@@ -3,15 +3,15 @@ import type { CollectionEntry } from 'astro:content';
 
 type BlogEntry = CollectionEntry<'articles'>;
 
-export async function getBlogEntry(_lang: string): Promise<BlogEntry[]> {
+export async function getBlogEntry(): Promise<BlogEntry[]> {
     const blogEntries = await getCollection('articles');
     (blogEntries as BlogEntry[]).sort((a: BlogEntry, b: BlogEntry) => new Date(b.data.updated).getTime() - new Date(a.data.updated).getTime());
     return blogEntries;
 }
 
-export async function getCategoryList(lang: string):Promise<{ name: string; path: string; count: number }[]> {
+export async function getCategoryList(): Promise<{ name: string; path: string; count: number }[]> {
     const categoryMap: { [key: string]: { name: string; path: string; count: number } } = {};
-    const blogEntries = await getBlogEntry(lang);
+    const blogEntries = await getBlogEntry();
     blogEntries.forEach(entry => {
         const category = entry.data.categories;
         if (category) {
@@ -24,9 +24,9 @@ export async function getCategoryList(lang: string):Promise<{ name: string; path
     return Object.values(categoryMap);
 }
 
-export async function getTagList(lang: string): Promise<{ name: string; path: string; count: number }[]> {
+export async function getTagList(): Promise<{ name: string; path: string; count: number }[]> {
     const tagMap: { [key: string]: { name: string; path: string; count: number } } = {};
-    const blogEntries = await getBlogEntry(lang);
+    const blogEntries = await getBlogEntry();
 
     blogEntries.forEach(entry => {
         const tags = entry.data.tags;
@@ -43,7 +43,7 @@ export async function getTagList(lang: string): Promise<{ name: string; path: st
     return Object.values(tagMap).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
-export async function getArchiveLength(lang: string):Promise<number> {
-    const blogEntries = await getBlogEntry(lang);
+export async function getArchiveLength(): Promise<number> {
+    const blogEntries = await getBlogEntry();
     return blogEntries.length;
 }

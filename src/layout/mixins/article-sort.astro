@@ -1,15 +1,13 @@
 ---
-import type { Language } from '@src/types';
 import type { CollectionEntry } from 'astro:content';
-import { useTranslations, date, full_date, date_xml } from '@src/utils';
+import { date, full_date, date_xml } from '@src/utils';
 import { theme } from '@src/theme';
 import { getConfig } from '@src/config';
 
-interface Props { lang: Language; posts: CollectionEntry<'articles'>[]; }
+interface Props { posts: CollectionEntry<'articles'>[]; }
 let year: string;
-const { lang,posts } = Astro.props;
-const config = getConfig(lang);
-const t = useTranslations(lang);
+const { posts } = Astro.props;
+const config = getConfig();
 ---
 <div class="article-sort">
 {posts.map((post:any) => {
@@ -17,7 +15,7 @@ const t = useTranslations(lang);
     const articlePath = `/posts/${article.abbrlink}`;
     const tempYear = date(article.date, 'YYYY');
     const noCoverClass = article.cover === false ? 'no-article-cover' : '';
-    const title = article.title || t('no_title');
+    const title = article.title || 'Untitled';
     const isNewYear = tempYear !== year;
     year = tempYear;
 
@@ -36,26 +34,13 @@ const t = useTranslations(lang);
             )}
             </a>
         )}
-        {/* {article.cover && theme.cover.archives_enable && (
-            <a class="article-sort-item-img" href={url_for(article.path)} title={title}>
-            {article.cover_type === 'img' ? (
-                <img
-                src={url_for(article.cover)}
-                alt={title}
-                onerror={`this.onerror=null;this.src='${url_for(theme.error_img.post_page)}'`}
-                />
-            ) : (
-                <div style={`background: ${article.cover}`}></div>
-            )}
-            </a>
-        )} */}
         <div class="article-sort-item-info">
             <div class="article-sort-item-time">
             <i class="far fa-calendar-alt"></i>
             <time
                 class="post-meta-date-created"
                 datetime={date_xml(article.date)}
-                title={`${t('post.created')} ${full_date(article.date)}`}
+                title={`Created ${full_date(article.date)}`}
             >
                 {date(article.date, config.date_format)}
             </time>

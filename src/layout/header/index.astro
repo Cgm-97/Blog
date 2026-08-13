@@ -1,16 +1,15 @@
 ---
-import type { Language } from '@src/types';
 import { getBgPath } from '@src/utils';
 import { theme } from '@src/theme';
-
-interface Props { lang: Language; page: Record<string, any>; }
-const { lang,page } = Astro.props;
 import { getConfig } from '@src/config';
-const config = getConfig(lang);
 import { is_home, is_post } from '@src/utils';
 import Nav from './nav.astro';
 import Social from './social.astro';
 import PostInfo from './post-info.astro';
+
+interface Props { page: Record<string, any>; }
+const { page } = Astro.props;
+const config = getConfig();
 
 const returnTopImg = (img:string | false) => img !== false ? img || theme.default_top_img : false;
 const isFixedClass = theme.nav.fixed ? ' fixed' : '';
@@ -29,7 +28,6 @@ if (!theme.disable_top_img ) {
   } else {
     top_img = false;
   }
-
   if (top_img !== false) {
     headerClassName = isHome ? 'full_page' : 'post-bg';
     bg_img = getBgPath(typeof top_img === 'string' ? top_img : '');
@@ -40,10 +38,10 @@ const sub = config.subtitle.sub;
 ---
 
 <header id="page-header" class={`${headerClassName}${isFixedClass} relative w-full bg-theme bg-center bg-cover bg-no-repeat transition-all duration-500`} style={bg_img}>
-  <Nav lang={lang}/>
+  <Nav />
       {top_img !== false ? (
         isPost ? (
-          <PostInfo lang={lang} page={page}/>
+          <PostInfo page={page}/>
         ) : isHome ? (
           <div id="site-info" class="absolute w-full px-[10px]" style="top: 43%;">
             <h1 id="site-title">{config.title}</h1>
@@ -54,7 +52,7 @@ const sub = config.subtitle.sub;
             )}
             {(
               <div id="site_social_icons" class="hidden mx-auto text-center md:block">
-                <Social lang={lang}/>
+                <Social />
               </div>
             )}
           </div>
@@ -76,7 +74,6 @@ const sub = config.subtitle.sub;
 
 <script>
   import Typed from 'typed.js';
-
   const el = document.getElementById('site-subtitle');
   if (el) {
     const strings = JSON.parse(el.dataset.strings || '[]');

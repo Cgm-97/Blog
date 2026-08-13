@@ -2,12 +2,9 @@
 import Layout from '@src/layout/layout.astro';
 import ArticleSort from '@src/layout/mixins/article-sort.astro';
 import { getBlogEntry, getArchiveLength } from '@src/prework';
-import { useTranslations } from '@src/utils';
 
-const lang = 'en';
-const t = useTranslations(lang);
-const blogEntries = await getBlogEntry(lang);
-const archiveLength = await getArchiveLength(lang);
+const blogEntries = await getBlogEntry();
+const archiveLength = await getArchiveLength();
 
 const page = {
   title: 'Categories',
@@ -16,9 +13,9 @@ const page = {
 };
 ---
 
-<Layout lang={lang} page={page}>
+<Layout page={page}>
   <div id="archive">
     <div class="article-sort-title">{`Categories - ${archiveLength}`}</div>
-    <ArticleSort lang={lang} posts={blogEntries} />
+    <ArticleSort posts={blogEntries} />
   </div>
 </Layout>

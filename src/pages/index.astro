@@ -1,12 +1,10 @@
 ---
-import type { Language } from '@src/types';
 import Layout from '@src/layout/layout.astro';
 import IndexPostUI from '@src/layout/mixins/IndexPostUI.astro';
 import { getBlogEntry } from '@src/prework';
 
-const lang: Language = 'en';
 const pageSize = 10;
-const blogEntries = await getBlogEntry(lang);
+const blogEntries = await getBlogEntry();
 const pageCount = Math.max(1, Math.ceil(blogEntries.length / pageSize));
 
 const pageSetting = {
@@ -26,6 +24,6 @@ const firstPage = {
 };
 ---
 
-<Layout lang={lang} page={pageSetting}>
-  <IndexPostUI lang={lang} postsPagnition={firstPage as any} />
+<Layout page={pageSetting}>
+  <IndexPostUI postsPagnition={firstPage as any} />
 </Layout>
