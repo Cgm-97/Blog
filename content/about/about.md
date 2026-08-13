@@ -107,7 +107,7 @@ My Goal: NTUST(NTU) CSIE x GIEE
   <div class="timeline-item">
     <div class="timeline-item-title">Jun 2026</div>
     <div class="timeline-item-content">
-      Myself - AIS3 Pre-Exam CTF Place:idk XD <span class="hl-label blue">CTF</span>
+      Myself - AIS3 Pre-Exam CTF Place:idk XDD <span class="hl-label blue">CTF</span>
     </div>
   </div>
 </div>
