@@ -18,15 +18,26 @@ export async function getStaticPaths() {
 const { entry } = Astro.props as { entry: any };
 const lang = 'en';
 const { Content, headings } = await render(entry);
+const postTags = Array.isArray(entry.data.tags)
+  ? entry.data.tags
+  : typeof entry.data.tags === 'string'
+    ? [entry.data.tags]
+    : [];
 ---
 <Layout lang={lang} page={entry.data} postHeadings={headings}>
   <div id="post">
+    {postTags.length > 0 && (
+      <div class="tag_share">
+        <div class="post-meta__tag-list">
+          {postTags.map((tag: string) => (
+            <a class="post-meta__tags" href={`/tags/${encodeURIComponent(tag)}`}>{tag}</a>
+          ))}
+        </div>
+      </div>
+    )}
     <article id="article-container" class="post-content">
       <Content />
     </article>
-    <div class="tag_share">
-      
-    </div>
     <Comments lang={lang}/>
   </div>
 </Layout>

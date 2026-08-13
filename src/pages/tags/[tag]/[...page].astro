@@ -1,0 +1,52 @@
+---
+import Layout from '@src/layout/layout.astro';
+import ArticleSort from '@src/layout/mixins/article-sort.astro';
+import Pagination from '@src/layout/pagination.astro';
+import { getBlogEntry, getTagList } from '@src/prework';
+
+const lang = 'en';
+
+export async function getStaticPaths({ paginate }: any) {
+  const lang = 'en';
+  const tags = await getTagList(lang);
+  const blogEntries = await getBlogEntry(lang);
+  const paths = [];
+  const POSTS_PER_PAGE = 10;
+
+  for (const tag of tags) {
+    const tagPosts = blogEntries.filter(entry => {
+      const entryTags = entry.data.tags;
+      const tagList = Array.isArray(entryTags) ? entryTags : typeof entryTags === 'string' ? [entryTags] : [];
+      return tagList.includes(tag.name);
+    });
+
+    paths.push(
+      ...paginate(tagPosts, {
+        params: { tag: encodeURIComponent(tag.name) },
+        props: { tag: tag.name },
+        pageSize: POSTS_PER_PAGE,
+        routePattern: `/tags/${encodeURIComponent(tag.name)}/[...page]`,
+        slugFormatter: (page: number) => (page > 1 ? `${page}` : undefined)
+      })
+    );
+  }
+
+  return paths;
+}
+
+const { tag, page } = Astro.props;
+const decodedTag = decodeURIComponent(tag);
+const pageSettings = {
+  title: `Tag: ${decodedTag}`,
+  type: 'tags',
+  comments: false
+};
+---
+
+<Layout lang={lang} page={pageSettings}>
+  <div id="category">
+    <div class="article-sort-title">{'Tag - ' + decodedTag}</div>
+    <ArticleSort lang={lang} posts={page.data}/>
+    <Pagination page={page}/>
+  </div>
+</Layout>

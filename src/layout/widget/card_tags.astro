@@ -1,0 +1,23 @@
+---
+import { getTagList } from '@src/prework';
+import { theme } from '@src/theme';
+import { useTranslations } from '@src/utils';
+
+const { lang } = Astro.props as { lang: string };
+const t = useTranslations(lang);
+const tagList = await getTagList(lang);
+const limit = theme.aside.card_tags.limit;
+---
+
+{theme.aside.card_tags.enable && tagList.length > 0 && (
+  <div class="card-widget card-tags" style="margin-left: 10px; margin-right: 4px; width: calc(100% - 14px); transform: translateX(20px);">
+    <div class="item-headline pb-[6px] text-[1.2em]">
+      <span>{t('aside.tags')}</span>
+    </div>
+    <div class="card-tag-cloud">
+      {tagList.slice(0, limit).map(tag => (
+        <a href={tag.path}>{tag.name}</a>
+      ))}
+    </div>
+  </div>
+)}

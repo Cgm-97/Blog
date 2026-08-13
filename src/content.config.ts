@@ -7,6 +7,7 @@ const BlogPostSchema = z.object({
   sticky: z.number().default(0),
   cover: z.string().optional(),
   categories: z.string(),
+  tags: z.union([z.string(), z.array(z.string())]).optional(),
   abbrlink: z.string(),
   description: z.string().optional(),
   date: z.coerce.date(),
@@ -17,14 +18,13 @@ const BoardSchema = z.object({
   title: z.string(),
 });
 
-const en_blog = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.md', base: "./content/blog/en" }),
+const articles = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: "./content/articles" }),
   schema: BlogPostSchema,
 });
 
-const board = defineCollection({
-  loader: glob({ pattern: '*.md', base: "./content/board" }),
+const about = defineCollection({
+  loader: glob({ pattern: '*.md', base: "./content/about" }),
   schema: BoardSchema,
 });
-
-export const collections = { en_blog, board };
+export const collections = { articles, about };

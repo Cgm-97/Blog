@@ -2,8 +2,9 @@
 import Layout from '@src/layout/layout.astro';
 import ArticleSort from '@src/layout/mixins/article-sort.astro';
 import Pagination from '@src/layout/pagination.astro';
-import { useTranslations } from '@src/utils';
 import { getBlogEntry, getCategoryList } from '@src/prework';
+
+const lang = 'en';
 
 export async function getStaticPaths({ paginate }: any) {
   const lang = 'en';
@@ -16,13 +17,13 @@ export async function getStaticPaths({ paginate }: any) {
     const categoryPosts = blogEntries.filter(
       entry => entry.data.categories === category.name
     );
-    
+
     paths.push(
       ...paginate(categoryPosts, {
-        params: { category: category.name },
+        params: { category: encodeURIComponent(category.name) },
         props: { category: category.name },
         pageSize: POSTS_PER_PAGE,
-        routePattern: `/categories/${category.name}/[...page]`,
+        routePattern: `/categories/${encodeURIComponent(category.name)}/[...page]`,
         slugFormatter: (page: number) =>
           page > 1 ? `${page}` : undefined
       })
@@ -32,11 +33,9 @@ export async function getStaticPaths({ paginate }: any) {
 }
 
 const { category, page } = Astro.props;
-const lang = 'en';
-const t = useTranslations(lang);
 const decodedCategory = decodeURIComponent(category);
 const pageSettings = {
-  title: `${t('page.category')}: ${decodedCategory}`,
+  title: `Category: ${decodedCategory}`,
   type: 'categories',
   comments: false
 };
@@ -44,7 +43,7 @@ const pageSettings = {
 
 <Layout lang={lang} page={pageSettings}>
     <div id="category">
-      <div class="article-sort-title">{t('page.category') + ' - ' + `${decodedCategory}`}</div>
+      <div class="article-sort-title">{'Category - ' + decodedCategory}</div>
       <ArticleSort lang={lang} posts={page.data}/>
       <Pagination page={page}/>
     </div>

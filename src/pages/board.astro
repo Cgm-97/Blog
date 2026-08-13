@@ -6,7 +6,7 @@ import { getCollection, render } from 'astro:content';
 import Comments from '@src/layout/third-party/comments.astro';
 
 const lang: Language = 'en';
-const boardEntries = await getCollection('board');
+const boardEntries = await getCollection('about');
 const boardEntry = boardEntries[0];
 const t = useTranslations(lang);
 

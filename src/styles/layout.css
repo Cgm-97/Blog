@@ -459,6 +459,13 @@
     @apply mb-0;
   }
 
+  #aside-content .card-info,
+  #aside-content .card-announcement {
+    margin-left: 0;
+    margin-right: 0;
+    width: auto;
+  }
+
   #aside-content .card-info .card-info-social-icons .social-icon {
     @apply mx-[10px] text-[1.4em];
     color: var(--font-color);
@@ -572,7 +579,7 @@
 
   @media (min-width: 901px) {
     #aside-content #card-toc {
-      @apply right-0;
+      right: auto;
     }
   }
 

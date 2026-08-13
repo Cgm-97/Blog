@@ -376,24 +376,32 @@
   color: #fff;
   font-size: 0.85em;
 }
-
+.hl-label.black {
+  background-color: #000000;
+}
+.hl-label.gray {
+  background-color: #6c757d;
+}
+.hl-label.white {
+  background-color: #ffffff;
+}
 .hl-label.blue {
   background-color: #428bca;
-}
-.hl-label.pink {
-  background-color: #ff69b4;
 }
 .hl-label.red {
   background-color: #ff0000;
 }
-.hl-label.purple {
-  background-color: #6f42c1;
+.hl-label.green {
+  background-color: #5cb85c;
 }
 .hl-label.orange {
   background-color: #ff8c00;
 }
-.hl-label.green {
-  background-color: #5cb85c;
+.hl-label.pink {
+  background-color: #ff69b4;
+}
+.hl-label.purple {
+  background-color: #6f42c1;
 }
 
 .hide-toggle {

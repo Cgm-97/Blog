@@ -1,0 +1,28 @@
+---
+import Layout from '@src/layout/layout.astro';
+import { getTagList } from '@src/prework';
+import { useTranslations } from '@src/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
+const tags = await getTagList(lang);
+
+const page = {
+  title: 'Tags',
+  type: 'tags',
+  comments: false
+};
+---
+
+<Layout lang={lang} page={page}>
+  <div id="page">
+    <div class="tag-cloud-title">{t('aside.tags')}</div>
+    <div id="tags-list">
+      {tags.map(tag => (
+        <a href={tag.path} style={`font-size: ${0.95 + Math.min(tag.count, 8) * 0.08}rem;`}>
+          {tag.name}
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

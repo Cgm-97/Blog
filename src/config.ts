@@ -1,4 +1,4 @@
-import type { Language, SiteConfig } from './types';
+import type { SiteConfig } from './types';
 
 const configEn = {
     title: "Cgm's Blog",
@@ -12,7 +12,6 @@ const configEn = {
             limit_count: 50
         }
     },
-    language: "en" as const,
     source_dir: "source",
     public_dir: "public",
     tag_dir: "tags",
@@ -40,6 +39,6 @@ const configEn = {
     per_page: 10
 } satisfies SiteConfig;
 
-export const getConfig = (_language: Language): SiteConfig => {
+export const getConfig = (): SiteConfig => {
     return configEn;
 };

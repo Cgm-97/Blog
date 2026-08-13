@@ -14,9 +14,8 @@ import CardPostTocItems from './card_post_toc_items.astro';
 // const tocExpandClass = tocExpand ? 'is-expand' : '';
 ---
 
-<div id="card-toc" class="card-widget">
+<div id="card-toc" class="card-widget" style="margin-left: 10px; margin-right: 4px; width: calc(100% - 14px); transform: translateX(20px);">
   <div class="item-headline">
-    <i class="fas fa-stream"></i>
     <span>{t('aside.card_toc')}</span>
     <span class="toc-percentage"></span>
   </div>

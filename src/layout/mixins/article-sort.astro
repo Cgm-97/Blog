@@ -5,7 +5,7 @@ import { useTranslations, date, full_date, date_xml } from '@src/utils';
 import { theme } from '@src/theme';
 import { getConfig } from '@src/config';
 
-interface Props { lang: Language; posts: CollectionEntry<'en_blog'>[]; }
+interface Props { lang: Language; posts: CollectionEntry<'articles'>[]; }
 let year: string;
 const { lang,posts } = Astro.props;
 const config = getConfig(lang);

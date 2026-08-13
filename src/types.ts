@@ -1,8 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
 
-export type Language = 'en';
-
-export type BlogPostData = CollectionEntry<'en_blog'>['data'];
+export type BlogPostData = CollectionEntry<'articles'>['data'];
 
 export interface PostHeading {
   depth: number;
@@ -32,7 +30,6 @@ export interface SiteConfig {
   };
   copyright?: string;
   root?: string;
-  language: Language;
   source_dir: string;
   public_dir: string;
   tag_dir: string;

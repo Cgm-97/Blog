@@ -1,4 +1,3 @@
-
 #recent-posts .recent-post-item {
   @apply relative overflow-hidden mb-5 rounded-lg transition-all duration-300;
   display: flex;
@@ -549,7 +548,7 @@ box-shadow: 0 4px 12px rgba(65, 224, 198, 0.25);
 }
 
 #content-inner {
-  @apply max-w-[1200px] mx-auto px-4;
+  @apply max-w-[1280px] mx-auto px-4;
 }
 
 @media (max-width: 768px) {
@@ -568,7 +567,8 @@ box-shadow: 0 4px 12px rgba(65, 224, 198, 0.25);
 
 @media (min-width: 900px) {
   .layout > :first-child {
-    max-width: calc(100% - 330px);
+    max-width: calc(100% - 320px + 80px);
+    margin-left: -76px;
   }
 
   .layout.hide-aside > :first-child {
