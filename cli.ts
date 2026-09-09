@@ -35,6 +35,7 @@ cover:
 categories: ${category}
 abbrlink: "${abbrlink}"
 description: 
+# Optional: set a password here to lock this article.
 date: ${dateStr}
 updated: ${dateStr}
 tags:

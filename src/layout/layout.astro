@@ -21,7 +21,7 @@ const { page, postHeadings } = Astro.props;
 const asideClass = theme.aside.enable && theme.aside.hide ? 'hide-aside' : '';
 const excludeFromSearch = page.type === 'archives' || page.type === 'index';
 ---
-<html lang="en" class={asideClass}>
+<html lang="zh-TW" class={asideClass}>
   <Head page={page}/>
   <body>
     <LoadingIndex />

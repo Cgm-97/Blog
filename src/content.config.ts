@@ -10,6 +10,7 @@ const BlogPostSchema = z.object({
   tags: z.union([z.string(), z.array(z.string())]).optional(),
   abbrlink: z.string(),
   description: z.string().optional(),
+  password: z.string().min(1).optional(),
   date: z.coerce.date(),
   updated: z.coerce.date(),
 });

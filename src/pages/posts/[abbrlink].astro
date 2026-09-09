@@ -3,6 +3,7 @@ import { getBlogEntry } from '@src/prework';
 import { render } from 'astro:content';
 import Layout from '@src/layout/layout.astro';
 import Comments from '@src/layout/third-party/comments.astro';
+import { createHash } from 'node:crypto';
 
 export async function getStaticPaths() {
   const paths: { params: { abbrlink: string }; props: { entry: any } }[] = [];
@@ -16,13 +17,16 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props as { entry: any };
 const { Content, headings } = await render(entry);
+const passwordHash = entry.data.password
+  ? createHash('sha256').update(entry.data.password).digest('hex')
+  : null;
 const postTags = Array.isArray(entry.data.tags)
   ? entry.data.tags
   : typeof entry.data.tags === 'string'
     ? [entry.data.tags]
     : [];
 ---
-<Layout page={entry.data} postHeadings={headings}>
+<Layout page={entry.data} postHeadings={passwordHash ? undefined : headings}>
   <div id="post">
     {postTags.length > 0 && (
       <div class="tag_share">
@@ -33,9 +37,132 @@ const postTags = Array.isArray(entry.data.tags)
         </div>
       </div>
     )}
-    <article id="article-container" class="post-content">
+    {passwordHash && (
+      <section class="article-lock" data-article-lock data-password-hash={passwordHash}>
+        <i class="fas fa-lock article-lock-icon" aria-hidden="true"></i>
+        <h2>The Article is Locked</h2>
+        <p>Enter the password to read the article.</p>
+        <form data-lock-form>
+          <label class="sr-only" for="article-password">Article Password</label>
+          <input
+            id="article-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Enter Article Password"
+            required
+          />
+          <button type="submit">Unlock Article</button>
+          <p class="article-lock-error" data-lock-error role="alert" hidden>Incorrect Password.</p>
+        </form>
+      </section>
+    )}
+    <article
+      id="article-container"
+      class:list={{ 'post-content': true, 'article-locked': !!passwordHash }}
+      data-pagefind-ignore={passwordHash ? '' : undefined}
+      aria-hidden={passwordHash ? 'true' : undefined}
+    >
       <Content />
     </article>
-    <Comments />
+    {!passwordHash && <Comments />}
   </div>
 </Layout>
+
+{passwordHash && (
+  <script>
+    const lock = document.querySelector('[data-article-lock]') as HTMLElement | null;
+    const article = document.getElementById('article-container');
+    const form = document.querySelector('[data-lock-form]') as HTMLFormElement | null;
+    const error = document.querySelector('[data-lock-error]') as HTMLElement | null;
+
+    if (lock && article && form) {
+      const hash = lock.dataset.passwordHash;
+      const encoder = new TextEncoder();
+
+      const toHex = (bytes: Uint8Array) =>
+        Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+
+      const unlock = () => {
+        lock.hidden = true;
+        article.classList.remove('article-locked');
+        article.removeAttribute('aria-hidden');
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const password = new FormData(form).get('password');
+        if (typeof password !== 'string' || !hash) return;
+
+        const digest = await crypto.subtle.digest('SHA-256', encoder.encode(password));
+        if (toHex(new Uint8Array(digest)) === hash) {
+          unlock();
+          return;
+        }
+
+        if (error) error.hidden = false;
+      });
+    }
+  </script>
+)}
+
+<style>
+  .article-lock {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+    padding: 3rem 1.5rem;
+    border: 1px solid var(--hr-border);
+    border-radius: 0.75rem;
+    background: var(--card-bg);
+    text-align: center;
+  }
+
+  .article-lock[hidden] {
+    display: none;
+  }
+
+  .article-lock-icon {
+    color: var(--theme-color);
+    font-size: 2rem;
+  }
+
+  .article-lock h2,
+  .article-lock p {
+    margin: 0;
+  }
+
+  .article-lock form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .article-lock input {
+    min-width: min(16rem, 70vw);
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--hr-border);
+    border-radius: 0.35rem;
+    color: var(--font-color);
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .article-lock button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    color: var(--btn-color);
+    background: var(--btn-bg);
+  }
+
+  .article-lock-error {
+    flex-basis: 100%;
+    color: #ff8f8f;
+  }
+
+  .article-locked {
+    display: none;
+  }
+</style>

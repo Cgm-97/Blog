@@ -30,6 +30,20 @@ My Goal: NTUST(NTU) CSIE x GIEE
 
 <div class="timeline">
   <div class="timeline-item">
+    <div class="timeline-item-title">Aug 2026</div>
+    <div class="timeline-item-content">
+      第十一屆AIS3好厲駭啟動會議暨第十屆成果發表會及產業鏈結會 <span class="hl-label green">ATTENDEE</span>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-item-title">Aug 2026</div>
+    <div class="timeline-item-content">
+      後量子密碼技術與資安韌性高峰會 <span class="hl-label green">ATTENDEE</span>
+    </div>
+  </div>
+
+  <div class="timeline-item">
     <div class="timeline-item-title">Jul 2026</div>
     <div class="timeline-item-content">
       AIS3 新型態資安實務暑期課程 2026 <span class="hl-label green">進階資安攻防競技 CTF4</span>
@@ -59,9 +73,25 @@ My Goal: NTUST(NTU) CSIE x GIEE
 </div>
 
 
+
 ## Competition
 
 <div class="timeline">
+
+  <div class="timeline-item">
+    <div class="timeline-item-title">Jul 2026</div>
+    <div class="timeline-item-content">
+      Team 9 - 資安防護實戰 決賽 - Place:5 <span class="hl-label blue">CTF</span>
+    </div>
+  </div>
+
+  <div class="timeline-item">
+    <div class="timeline-item-title">Jul 2026</div>
+    <div class="timeline-item-content">
+      Myself - THJCC CTF 3rd Summer Edition - Place:75 / Student Divsion:16 <span class="hl-label blue">CTF</span>
+    </div>
+  </div>
+
   <div class="timeline-item">
     <div class="timeline-item-title">Jul 2026</div>
     <div class="timeline-item-content">
