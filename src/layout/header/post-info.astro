@@ -15,12 +15,14 @@ const config = getConfig();
       <span class="post-meta-date">
         <i class="far fa-calendar-alt fa-fw post-meta-icon"></i>
         <span class="post-meta-label">Created</span>
+        {' '}
         <time class="post-meta-date-created" datetime={date_xml(page.date)} title={`Created ${full_date(page.date)}`}>
           {date(page.date, config.date_format)}
         </time>
         <span class="post-meta-separator"> | </span>
         <i class="fas fa-history fa-fw post-meta-icon"></i>
         <span class="post-meta-label">Updated</span>
+        {' '}
         <time class="post-meta-date-updated" datetime={date_xml(page.updated)} title={`Updated ${full_date(page.updated)}`}>
           {date(page.updated, config.date_format)}
         </time>
