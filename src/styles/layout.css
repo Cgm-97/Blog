@@ -79,6 +79,11 @@
     transform: translateY(-50%);
   }
 
+  #post-meta .post-meta-date-created,
+  #post-meta .post-meta-date-updated {
+    margin-left: 0.25rem;
+  }
+
   @media (max-width: 768px) {
     #post-info {
       @apply px-[15px];
