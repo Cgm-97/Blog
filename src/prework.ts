@@ -5,8 +5,10 @@ type BlogEntry = CollectionEntry<'articles'>;
 
 export async function getBlogEntry(): Promise<BlogEntry[]> {
     const blogEntries = await getCollection('articles');
-    (blogEntries as BlogEntry[]).sort((a: BlogEntry, b: BlogEntry) => new Date(b.data.updated).getTime() - new Date(a.data.updated).getTime());
-    return blogEntries;
+    return blogEntries.sort((a, b) => {
+        const dateDifference = b.data.date.getTime() - a.data.date.getTime();
+        return dateDifference || b.data.updated.getTime() - a.data.updated.getTime();
+    });
 }
 
 export async function getCategoryList(): Promise<{ name: string; path: string; count: number }[]> {
